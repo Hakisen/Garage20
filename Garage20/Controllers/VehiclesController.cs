@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Garage20.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Garage20.Controllers
 {
@@ -46,10 +47,12 @@ namespace Garage20.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public ActionResult Create([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
         {
+
             if (ModelState.IsValid)
-            {
+            {   
                 vehicle.TimeIn = DateTime.Now;
                 db.Vehicles.Add(vehicle);
                 db.SaveChanges();
@@ -79,10 +82,13 @@ namespace Garage20.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels")] Vehicle vehicle)
+        public ActionResult Edit([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
         {
+            //var timeIn = vehicle.TimeIn;
             if (ModelState.IsValid)
-            {
+            {                
+                
+                //vehicle.TimeIn = timeIn;
                 db.Entry(vehicle).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

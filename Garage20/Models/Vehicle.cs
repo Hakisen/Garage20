@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,6 +15,7 @@ namespace Garage20.Models
         public string Brand { get; set; }
         public string Model { get; set; }
         public int NrOfWheels { get; set; }
+        [Column(TypeName = "datetime2")]
         public DateTime TimeIn { get; set; }
     }
     public enum TypeOfVehicle
