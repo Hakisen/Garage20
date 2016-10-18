@@ -36,6 +36,46 @@ namespace Garage20.Controllers
             return View(vehicle);
         }
 
+        //***********************************************
+        //***********************************************
+
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        //GET: Vehicle/RegNr
+        //public ActionResult Search([Bind(Include = "TypeOfVehicle, RegNr, colour, Brand, Model, NrOfWheels")] Vehicle vehicle)
+        public ActionResult Search(string TypeOfVehicle, string RegNr, string colour, string Brand, string Model, int? NrOfWheels)
+        {
+            //if (RegNr == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Vehicle vehicle = db.Vehicles.Find(RegNr);
+            //if (vehicle == null)
+            //{
+            //    return HttpNotFound();
+            //}
+
+            return View(db.Vehicles.Where(p => p.TypeOfVehicle.Equals(TypeOfVehicle) && p.RegNr.ToUpper().Contains(RegNr.ToUpper()) && p.colour.ToUpper().Contains(colour.ToUpper()) && p.Brand.ToUpper().Contains(Brand.ToUpper())).ToList()); //OK! 
+            //searchedVehicles.ForEach(p => Console.WriteLine("Vehicle: \t" + p.GetType().Name
+
+            //return View(db.Vehicles.ToList());
+
+
+            //return View(vehicle);
+        }
+
+        //****************************************************
+        //****************************************************
+
+
+
+
         // GET: Vehicles/Create
         public ActionResult Create()
         {
@@ -86,8 +126,10 @@ namespace Garage20.Controllers
         {
             //var timeIn = vehicle.TimeIn;
             if (ModelState.IsValid)
-            {                
-                
+            {
+                var old = db.Vehicles.Find(vehicle.Id);
+                vehicle.TimeIn = old.TimeIn;
+
                 //vehicle.TimeIn = timeIn;
                 db.Entry(vehicle).State = EntityState.Modified;
                 db.SaveChanges();

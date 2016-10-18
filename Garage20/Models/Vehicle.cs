@@ -26,4 +26,12 @@ namespace Garage20.Models
         Housewagon,
         Trailer
     }
+
+    public class TotalParkTime
+    {
+        public DateTime TimeOut { get; set; }
+        public DateTime TotalTime  { get; set; }
+
+
+    }
 }

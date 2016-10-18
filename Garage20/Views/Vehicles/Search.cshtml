@@ -1,21 +1,18 @@
 ﻿@model Garage20.Models.Vehicle
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Search";
 }
-
-<h2>Edit</h2>
-
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Vehicle</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        @*@Html.HiddenFor(model => model.Id)*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.TypeOfVehicle, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -68,12 +65,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TimeIn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @System.Threading.Thread.CurrentThread.CurrentCulture.ToString()<br />
-                @System.Threading.Thread.CurrentThread.CurrentUICulture.ToString()<br />
                 @Html.EditorFor(model => model.TimeIn, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.TimeIn, "", new { @class = "text-danger" })
             </div>
-        </div>      
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -83,10 +78,72 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<h2>SearchRegNr</h2>
+
+@*<div>
+    <h4>Vehicle</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeOfVehicle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeOfVehicle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RegNr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegNr)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.colour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.colour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Brand)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Brand)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NrOfWheels)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NrOfWheels)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeIn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeIn)
+        </dd>
+
+    </dl>
+</div>*@
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
