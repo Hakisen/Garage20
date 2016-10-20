@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Garage20.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Garage20.Controllers
 {
@@ -17,7 +18,6 @@ namespace Garage20.Controllers
         // GET: Vehicles
         public ActionResult Index()
         {
-           
             return View(db.Vehicles.ToList());
         }
 
@@ -36,6 +36,46 @@ namespace Garage20.Controllers
             return View(vehicle);
         }
 
+        //***********************************************
+        //***********************************************
+
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        //GET: Vehicle/RegNr
+        //public ActionResult Search([Bind(Include = "TypeOfVehicle, RegNr, colour, Brand, Model, NrOfWheels")] Vehicle vehicle)
+        public ActionResult Search(string TypeOfVehicle, string RegNr, string colour, string Brand, string Model, int? NrOfWheels)
+        {
+            //if (RegNr == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Vehicle vehicle = db.Vehicles.Find(RegNr);
+            //if (vehicle == null)
+            //{
+            //    return HttpNotFound();
+            //}
+
+            return View(db.Vehicles.Where(p => p.TypeOfVehicle.Equals(TypeOfVehicle) && p.RegNr.ToUpper().Contains(RegNr.ToUpper()) && p.colour.ToUpper().Contains(colour.ToUpper()) && p.Brand.ToUpper().Contains(Brand.ToUpper())).ToList()); //OK! 
+            //searchedVehicles.ForEach(p => Console.WriteLine("Vehicle: \t" + p.GetType().Name
+
+            //return View(db.Vehicles.ToList());
+
+
+            //return View(vehicle);
+        }
+
+        //****************************************************
+        //****************************************************
+
+
+
+
         // GET: Vehicles/Create
         public ActionResult Create()
         {
@@ -50,7 +90,7 @@ namespace Garage20.Controllers
         public ActionResult Create([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
-                    {
+            {
                Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
             if (existRegNr != null)
             {
@@ -64,10 +104,10 @@ namespace Garage20.Controllers
                 db.Vehicles.Add(vehicle);
                 db.SaveChanges();
             }
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            return View(vehicle);
         }
-          return View(vehicle);
-    }
 
 
     //    if (ModelState.IsValid)
@@ -81,8 +121,8 @@ namespace Garage20.Controllers
     //    return View(vehicle);
     //}
 
-    // GET: Vehicles/Edit/5
-    public ActionResult Edit(int? id)
+        // GET: Vehicles/Edit/5
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -104,6 +144,7 @@ namespace Garage20.Controllers
         public ActionResult Edit([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
 
         {
+            //var timeIn = vehicle.TimeIn;
             if (ModelState.IsValid)
             {
                 Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
@@ -117,7 +158,12 @@ namespace Garage20.Controllers
                     //vehicle.TimeIn = DateTime.Now;
                     //vehicle.ParkingCostParkHour = 60;
                     db.Vehicles.Add(vehicle);
-                    db.SaveChanges();
+                var old = db.Vehicles.Find(vehicle.Id);
+                vehicle.TimeIn = old.TimeIn;
+
+                //vehicle.TimeIn = timeIn;
+                db.Entry(vehicle).State = EntityState.Modified;
+                db.SaveChanges();
                 }
                 return RedirectToAction("Index");
             }
