@@ -133,6 +133,47 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610171223099_InitialCreate.cs" />
+    <Compile Include="Migrations\201610171223099_InitialCreate.Designer.cs">
+      <DependentUpon>201610171223099_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610171505022_datetime.cs" />
+    <Compile Include="Migrations\201610171505022_datetime.Designer.cs">
+      <DependentUpon>201610171505022_datetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610190903212_daytime.cs" />
+    <Compile Include="Migrations\201610190903212_daytime.Designer.cs">
+      <DependentUpon>201610190903212_daytime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610191033313_daytimeAndrequired.cs" />
+    <Compile Include="Migrations\201610191033313_daytimeAndrequired.Designer.cs">
+      <DependentUpon>201610191033313_daytimeAndrequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610191133120_minlength.cs" />
+    <Compile Include="Migrations\201610191133120_minlength.Designer.cs">
+      <DependentUpon>201610191133120_minlength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610191138081_minlength1.cs" />
+    <Compile Include="Migrations\201610191138081_minlength1.Designer.cs">
+      <DependentUpon>201610191138081_minlength1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610201207008_parkingfee.cs" />
+    <Compile Include="Migrations\201610201207008_parkingfee.Designer.cs">
+      <DependentUpon>201610201207008_parkingfee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610201220213_parkedcontrols.cs" />
+    <Compile Include="Migrations\201610201220213_parkedcontrols.Designer.cs">
+      <DependentUpon>201610201220213_parkedcontrols.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610201316087_propertynamechange.cs" />
+    <Compile Include="Migrations\201610201316087_propertynamechange.Designer.cs">
+      <DependentUpon>201610201316087_propertynamechange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610201357340_displayformats.cs" />
+    <Compile Include="Migrations\201610201357340_displayformats.Designer.cs">
+      <DependentUpon>201610201357340_displayformats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Garage20Context.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,6 +229,38 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201610171223099_InitialCreate.resx">
+      <DependentUpon>201610171223099_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610171505022_datetime.resx">
+      <DependentUpon>201610171505022_datetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610190903212_daytime.resx">
+      <DependentUpon>201610190903212_daytime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191033313_daytimeAndrequired.resx">
+      <DependentUpon>201610191033313_daytimeAndrequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191133120_minlength.resx">
+      <DependentUpon>201610191133120_minlength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191138081_minlength1.resx">
+      <DependentUpon>201610191138081_minlength1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610201207008_parkingfee.resx">
+      <DependentUpon>201610201207008_parkingfee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610201220213_parkedcontrols.resx">
+      <DependentUpon>201610201220213_parkedcontrols.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610201316087_propertynamechange.resx">
+      <DependentUpon>201610201316087_propertynamechange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610201357340_displayformats.resx">
+      <DependentUpon>201610201357340_displayformats.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

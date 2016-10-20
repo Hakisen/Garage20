@@ -17,6 +17,7 @@ namespace Garage20.Controllers
         // GET: Vehicles
         public ActionResult Index()
         {
+           
             return View(db.Vehicles.ToList());
         }
 
@@ -49,18 +50,39 @@ namespace Garage20.Controllers
         public ActionResult Create([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
+                    {
+               Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
+            if (existRegNr != null)
+            {
+                ViewBag.ErrorMessage = "Error vehicle reg nr already parked";
+                return View(vehicle);
+            }
+            else
             {
                 vehicle.TimeIn = DateTime.Now;
+                //vehicle.ParkingCostParkHour = 60;
                 db.Vehicles.Add(vehicle);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-
-            return View(vehicle);
+            return RedirectToAction("Index");
         }
+          return View(vehicle);
+    }
 
-        // GET: Vehicles/Edit/5
-        public ActionResult Edit(int? id)
+
+    //    if (ModelState.IsValid)
+    //    {
+    //        vehicle.TimeIn = DateTime.Now;
+    //        db.Vehicles.Add(vehicle);
+    //        db.SaveChanges();
+    //        return RedirectToAction("Index");
+    //    }
+
+    //    return View(vehicle);
+    //}
+
+    // GET: Vehicles/Edit/5
+    public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -79,16 +101,43 @@ namespace Garage20.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels")] Vehicle vehicle)
+        public ActionResult Edit([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
+
         {
             if (ModelState.IsValid)
             {
-                db.Entry(vehicle).State = EntityState.Modified;
-                db.SaveChanges();
+                Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
+                if (existRegNr != null)
+                {
+                    ViewBag.ErrorMessage = "Error vehicle RegNr already exist, change to unique";
+                    return View(vehicle);
+                }
+                else
+                {
+                    //vehicle.TimeIn = DateTime.Now;
+                    //vehicle.ParkingCostParkHour = 60;
+                    db.Vehicles.Add(vehicle);
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
             return View(vehicle);
         }
+
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(vehicle).State = EntityState.Modified;
+
+        //        //DateTime time = DateTime.Now;              // Use current time
+        //        //string format = "yyyy-MM-dd HH:MM:ss";    // modify the format depending upon input required in the column in database 
+        //        //string insert = @" insert into Table(DateTime Column) values ('" + time.ToString(format) + "')";
+
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(vehicle);
+        //}
 
         // GET: Vehicles/Delete/5
         public ActionResult Delete(int? id)
@@ -102,6 +151,10 @@ namespace Garage20.Controllers
             {
                 return HttpNotFound();
             }
+            vehicle.TimeOut = DateTime.Now;
+            vehicle.TimeParked = vehicle.TimeOut - vehicle.TimeIn;
+            vehicle.TimeFee = 60 * (int)((TimeSpan)vehicle.TimeParked).TotalMinutes / 60;
+            //db.SaveChanges();
             return View(vehicle);
         }
 
@@ -110,11 +163,25 @@ namespace Garage20.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+             
             Vehicle vehicle = db.Vehicles.Find(id);
             db.Vehicles.Remove(vehicle);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
+
+        //// POST: Vehicles/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Vehicle vehicle = db.Vehicles.Find(id);
+        //    db.Vehicles.Remove(vehicle);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -124,5 +191,7 @@ namespace Garage20.Controllers
             }
             base.Dispose(disposing);
         }
+
+
     }
 }
