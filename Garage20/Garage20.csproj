@@ -144,6 +144,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Garage20Context.cs" />
+    <Compile Include="Models\SearchView.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -195,6 +196,8 @@
     <Content Include="Views\Vehicles\Index.cshtml" />
     <Content Include="Views\Vehicles\Search.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Vehicles\SearchResult.cshtml" />
+    <Content Include="Views\Vehicles\SearchView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -36,44 +36,59 @@ namespace Garage20.Controllers
             return View(vehicle);
         }
 
-        //***********************************************
-        //***********************************************
 
+        //*******************************************************
 
-        public ActionResult Search()
+        //Search-funktionen. Det går att söka på samtliga fäl (utom Id och Time) samtidigt.
+        //public ActionResult Search()  // Ersatt av ViewModel nedan
+        public ActionResult SearchView()
         {
             return View();
         }
 
+                //GET: Vehicle/Search all
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
 
-        [HttpGet]
-        //GET: Vehicle/RegNr
-        //public ActionResult Search([Bind(Include = "TypeOfVehicle, RegNr, colour, Brand, Model, NrOfWheels")] Vehicle vehicle)
-        public ActionResult Search(string TypeOfVehicle, string RegNr, string colour, string Brand, string Model, int? NrOfWheels)
-        {
-            //if (RegNr == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //Vehicle vehicle = db.Vehicles.Find(RegNr);
-            //if (vehicle == null)
-            //{
-            //    return HttpNotFound();
-            //}
+        //public ActionResult Search()  // Ersatt av ViewModel nedan
 
-            return View(db.Vehicles.Where(p => p.TypeOfVehicle.Equals(TypeOfVehicle) && p.RegNr.ToUpper().Contains(RegNr.ToUpper()) && p.colour.ToUpper().Contains(colour.ToUpper()) && p.Brand.ToUpper().Contains(Brand.ToUpper())).ToList()); //OK! 
-            //searchedVehicles.ForEach(p => Console.WriteLine("Vehicle: \t" + p.GetType().Name
+        public ActionResult SearchView(string typeOfVehicle=null, string RegNr = "", string colour = "", string Brand = "", string Model = "", string NrOfWheels = null)
+        //public ActionResult Search(TypeOfVehicle TypeOfVehicle, string RegNr = "", string colour = "", string Brand = "", string Model = "", int NrOfWheels = 0) //Fungerar med enum!
+        {            
+            var model = db.Vehicles
+                .Where(p => (p.TypeOfVehicle.ToString().ToLower().Contains(typeOfVehicle.ToLower()) || typeOfVehicle == null || typeOfVehicle == "") 
+                && (RegNr == null || RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper()))
+                && (colour == null || colour == "" || p.colour.ToUpper().Contains(colour.ToUpper()))
+                && (Brand == null || Brand == "" || p.Brand.ToUpper().Contains(Brand.ToUpper()))
+                && (p.NrOfWheels.ToString().Contains(NrOfWheels) || NrOfWheels == "" || NrOfWheels == null || NrOfWheels == "0"));
+                
+/*            .Where(p => p.TypeOfVehicle.ToString().ToLower().Contains(typeOfVehicle.ToString().ToLower()) 
+            && (RegNr == null || RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper())) 
+            && (colour == null || colour == "" || p.colour.ToUpper().Contains(colour.ToUpper())) 
+            && (Brand == null || Brand == "" || p.Brand.ToUpper().Contains(Brand.ToUpper())) 
+            && (p.NrOfWheels.ToString().Contains(NrOfWheels) || NrOfWheels == "" || NrOfWheels == null));   */
 
-            //return View(db.Vehicles.ToList());
+            //.Where(p => RegNr == null || RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper()));  //FUNGERAR även utan text i RegNr!
+            //.Where(p => p.RegNr.ToUpper().Contains(RegNr.ToUpper()) || RegNr == null || RegNr == "");  //FUNGERAR även utan text i RegNr!!
+            //.Where(p => p.RegNr == null || p.RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper()));  //FUNGERAR med text i RegNr!
+            //.Where(p => p.TypeOfVehicle.ToString().ToLower().Contains(TypeOfVehicle.ToString().ToLower()));    //FUNGERAR!! Här skickas enum in....
+            //.Where(p => p.TypeOfVehicle.ToString().ToLower() == TypeOfVehicle.ToString().ToLower());   //FUNGERAR!! Här skickas enum in...
 
+/*            .Where(p => p.TypeOfVehicle.ToString().ToLower().Contains(TypeOfVehicle.ToString().ToLower()) 
+              && (p.RegNr == null || p.RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper())) 
+              && (p.colour == null || p.colour == "" || p.colour.ToUpper().Contains(colour.ToUpper())) 
+              && (p.Brand == null || p.Brand == "" || p.Brand.ToUpper().Contains(Brand.ToUpper())) 
+              && (p.NrOfWheels == NrOfWheels || p.NrOfWheels == 0));   Här är NrOfWheels en int.    */
 
-            //return View(vehicle);
-        }
+            if (model.Count() == 0)
+            {
+                ViewBag.ResultMessage = "No parked vechicles found in your Search";
+            }           
+
+            return View("SearchResult", model.ToList());  // "SearcResult" är en annan vy
+        } 
 
         //****************************************************
-        //****************************************************
-
-
 
 
         // GET: Vehicles/Create

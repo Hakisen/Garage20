@@ -68,8 +68,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.TimeIn, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @System.Threading.Thread.CurrentThread.CurrentCulture.ToString()<br />
-                @System.Threading.Thread.CurrentThread.CurrentUICulture.ToString()<br />
+                @*@System.Threading.Thread.CurrentThread.CurrentCulture.ToString()<br />*@
+                @*@System.Threading.Thread.CurrentThread.CurrentUICulture.ToString()<br />*@
                 @Html.EditorFor(model => model.TimeIn, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.TimeIn, "", new { @class = "text-danger" })
             </div>
