@@ -30,6 +30,7 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.RegNr, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.RegNr, "", new { @class = "text-danger" })
+                @Html.Raw(ViewBag.ErrorMessage)
             </div>
         </div>
 
@@ -60,7 +61,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NrOfWheels, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NrOfWheels, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.NrOfWheels, new { htmlAttributes = new { @class = "form-control", min = 2, max = 10 } })
                 @Html.ValidationMessageFor(model => model.NrOfWheels, "", new { @class = "text-danger" })
             </div>
         </div>
