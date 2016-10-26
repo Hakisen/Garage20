@@ -27,15 +27,13 @@ namespace Garage20.Models
         //[Key]
         public int Id { get; set; }
 
-        public TypeOfVehicle TypeOfVehicle { get; set; }
+        //public TypeOfVehicle TypeOfVehicle { get; set; }
 
         [Required]
         [StringLength(10, MinimumLength = 3, ErrorMessage = "Invalid, Min 3 digits max 10 digits")]
         //[MinLength(6, ErrorMessage = " 6 digits please")]
         //[StringLength(10, MinimumLength = 3, ErrorMessage = "Invalid max 10 digits min 3 digits")]
-
         //Index(IsUnique = true)
-
         public string RegNr { get; set; }
 
         [Required]
@@ -60,19 +58,22 @@ namespace Garage20.Models
 
         [Display(Name="Parking time hh:mm")]
         [DisplayFormat(DataFormatString ="{0:hh\\:mm}")]
-        public TimeSpan TimeParked { get; set; }
-        
+        public TimeSpan TimeParked { get; set; }        
         public int TimeFee { get; set; }
+        public int MemberId { get; set; }
+        public virtual Member Member { get; set; }
+        public int VehicleTypeId { get; set; }
+        public virtual TypeOfVehicle TypeOfVehicle { get; set; }
     }
 
-    public enum TypeOfVehicle
-    {
-        Car,
-        Truck,
-        Motorcycle,
-        Housewagon,
-        Trailer
-    }
+    //public enum TypeOfVehicle
+    //{
+    //    Car,
+    //    Truck,
+    //    Motorcycle,
+    //    Housewagon,
+    //    Trailer
+    //}
 
     //public class TotalParkTime
     //{
