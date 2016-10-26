@@ -49,7 +49,7 @@ namespace Garage20.Models
         [MaxLength(10, ErrorMessage = " maximum no Of letters is 10")]
         public string Model { get; set; }
 
-        [Range(2, 10, ErrorMessage = "0-10 please")]
+        [Range(2, 10, ErrorMessage = "2-10 please")]
         public int NrOfWheels { get; set; }
 
         [Column(TypeName = "datetime2")]
@@ -61,10 +61,8 @@ namespace Garage20.Models
         [Display(Name="Parking time hh:mm")]
         [DisplayFormat(DataFormatString ="{0:hh\\:mm}")]
         public TimeSpan TimeParked { get; set; }
-
         
         public int TimeFee { get; set; }
-
     }
 
     public enum TypeOfVehicle
@@ -76,11 +74,11 @@ namespace Garage20.Models
         Trailer
     }
 
-    public class TotalParkTime
-    {
-        public DateTime TimeOut { get; set; }
-        public DateTime TotalTime  { get; set; }
+    //public class TotalParkTime
+    //{
+    //    public DateTime TimeOut { get; set; }
+    //    public DateTime TotalTime  { get; set; }
 
 
-    }
+    //}
 }

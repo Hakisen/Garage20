@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Garage20.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Migrations;
 
 namespace Garage20.Controllers
 {
@@ -16,9 +17,40 @@ namespace Garage20.Controllers
         private Garage20Context db = new Garage20Context();
 
         // GET: Vehicles
-        public ActionResult Index()
+        public ActionResult Index(string sort)
         {
-            return View(db.Vehicles.ToList());
+            var model = db.Vehicles.Where(p => p.TimeOut.Year < 2000).ToList();
+            if (sort == "typeOfVehicle")
+            {
+                model = model.OrderBy(v => v.TypeOfVehicle).ToList();
+            }
+            else if (sort == "regNr")
+            {
+                model = model.OrderBy(v => v.RegNr).ToList();
+            }
+            else if (sort == "colour")
+            {
+                model = model.OrderBy(v => v.colour).ToList();
+            }
+            else if (sort == "brand")
+            {
+                model = model.OrderBy(v => v.Brand).ToList();
+            }
+            else if (sort == "model")
+            {
+                model = model.OrderBy(v => v.Model).ToList();
+            }
+            else if (sort == "nrOfWheels")
+            {
+                model = model.OrderBy(v => v.NrOfWheels).ToList();
+            }
+            else if (sort == "timeIn")
+            {
+                model = model.OrderBy(v => v.TimeIn).ToList();
+            }
+
+            return View(model);
+            //return View(db.Vehicles.ToList());
         }
 
         // GET: Vehicles/Details/5
@@ -85,7 +117,7 @@ namespace Garage20.Controllers
                 ViewBag.ResultMessage = "No parked vechicles found in your Search";
             }           
 
-            return View("SearchResult", model.ToList());  // "SearcResult" är en annan vy
+            return View("SearchResult", model.ToList());  // "SearchResult" är en annan vy
         } 
 
         //****************************************************
@@ -107,19 +139,19 @@ namespace Garage20.Controllers
             if (ModelState.IsValid)
             {
                Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
-            if (existRegNr != null)
-            {
-                ViewBag.ErrorMessage = "Error vehicle reg nr already parked";
-                return View(vehicle);
-            }
-            else
-            {
-                vehicle.TimeIn = DateTime.Now;
-                //vehicle.ParkingCostParkHour = 60;
-                db.Vehicles.Add(vehicle);
-                db.SaveChanges();
-            }
-                return RedirectToAction("Index");
+                if (existRegNr != null && existRegNr.TimeOut.Year < 2000)
+                {
+                        ViewBag.ErrorMessage = ("Error vehicle RegNr  \"" + existRegNr.RegNr + "\"  already exist, change to unique");
+                        return View(vehicle);
+                }
+                else
+                {
+                    vehicle.TimeIn = DateTime.Now;
+                    //vehicle.ParkingCostParkHour = 60;
+                    db.Vehicles.Add(vehicle);
+                    db.SaveChanges();
+                }
+                    return RedirectToAction("Index");
             }
             return View(vehicle);
         }
@@ -163,22 +195,22 @@ namespace Garage20.Controllers
             if (ModelState.IsValid)
             {
                 Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
-                if (existRegNr != null)
+                
+                if (existRegNr != null && (existRegNr.Id != vehicle.Id) && (existRegNr.TimeOut.Year < 2000))
                 {
-                    ViewBag.ErrorMessage = "Error vehicle RegNr already exist, change to unique";
+                    ViewBag.ErrorMessage = ("Error vehicle RegNr  \"" + existRegNr.RegNr + "\"  already exist, change to unique");
                     return View(vehicle);
                 }
                 else
                 {
-                    //vehicle.TimeIn = DateTime.Now;
                     //vehicle.ParkingCostParkHour = 60;
-                    db.Vehicles.Add(vehicle);
-                var old = db.Vehicles.Find(vehicle.Id);
-                vehicle.TimeIn = old.TimeIn;
-
-                //vehicle.TimeIn = timeIn;
-                db.Entry(vehicle).State = EntityState.Modified;
-                db.SaveChanges();
+                    //db.Vehicles.Add(vehicle);
+                    var old = db.Vehicles.Find(vehicle.Id);
+                    vehicle.TimeIn = old.TimeIn;
+                    //context.Entry(vehicle).State?? context.Entry är förmodligen vårt db.Entry
+                    //db.Entry(vehicle).State = EntityState.Modified;
+                    db.Vehicles.AddOrUpdate(vehicle);  //
+                    db.SaveChanges();
                 }
                 return RedirectToAction("Index");
             }
@@ -222,13 +254,26 @@ namespace Garage20.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-             
+        public ActionResult DeleteConfirmed(int id)  //old view
+        //public ActionResult Delete([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn,TimeOut,TimeFee")] Vehicle vehicle)
+        {            
             Vehicle vehicle = db.Vehicles.Find(id);
-            db.Vehicles.Remove(vehicle);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (vehicle.TimeOut.Year < 2000)
+            {
+                vehicle.TimeOut = DateTime.Now;
+                vehicle.TimeParked = vehicle.TimeOut - vehicle.TimeIn;
+                vehicle.TimeFee = 60 * (int)((TimeSpan)vehicle.TimeParked).TotalMinutes / 60;
+                var old = db.Vehicles.Find(vehicle.Id);
+                vehicle.TimeIn = old.TimeIn;
+
+                //db.Vehicles.Remove(vehicle);  //old Remove-function
+                db.Vehicles.AddOrUpdate(vehicle);
+                db.SaveChanges();
+
+                return View("Receipt", vehicle);
+            }
+            ViewBag.Message = "Sorry, no can do - Vehicle already checked out!";
+            return View(vehicle);       
         }
 
 

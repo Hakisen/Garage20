@@ -83,7 +83,7 @@
         @Html.DisplayNameFor(model => model.TimeFee)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.TimeFee)
+            @Html.DisplayFor(model => model.TimeFee) kr
         </dd>
 
     </dl>
@@ -92,8 +92,11 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Check Out" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
     }
+    <div>
+    @ViewBag.Message
+    </div>
 </div>

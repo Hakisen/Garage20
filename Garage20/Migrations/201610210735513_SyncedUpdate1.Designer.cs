@@ -7,13 +7,13 @@ namespace Garage20.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class ChangedDateTimeProp : IMigrationMetadata
+    public sealed partial class SyncedUpdate1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangedDateTimeProp));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SyncedUpdate1));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610171359018_ChangedDateTimeProp"; }
+            get { return "201610210735513_SyncedUpdate1"; }
         }
         
         string IMigrationMetadata.Source

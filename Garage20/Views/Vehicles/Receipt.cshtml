@@ -1,10 +1,12 @@
 ﻿@model Garage20.Models.Vehicle
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Receipt";
 }
 
-<h2>Details</h2>
+<h2>Receipt</h2>
+<h3>Receipt for parking in Garage 2.0 park house.<br />
+    You parking details and cost below:</h3>
 
 <div>
     <h4>Vehicle</h4>
@@ -66,10 +68,33 @@
             @Html.DisplayFor(model => model.TimeIn)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeOut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeOut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeParked)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeParked)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeFee) kr
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Check Out", "Delete", new { id = Model.Id }) |
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
