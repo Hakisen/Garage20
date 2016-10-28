@@ -129,14 +129,24 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Backup\bak_VehiclesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610210735513_SyncedUpdate1.cs" />
-    <Compile Include="Migrations\201610210735513_SyncedUpdate1.Designer.cs">
-      <DependentUpon>201610210735513_SyncedUpdate1.cs</DependentUpon>
+    <Compile Include="Migrations\201610261228495_init5.cs" />
+    <Compile Include="Migrations\201610261228495_init5.Designer.cs">
+      <DependentUpon>201610261228495_init5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610270731267_init6.cs" />
+    <Compile Include="Migrations\201610270731267_init6.Designer.cs">
+      <DependentUpon>201610270731267_init6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610270801191_init7.cs" />
+    <Compile Include="Migrations\201610270801191_init7.Designer.cs">
+      <DependentUpon>201610270801191_init7.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Garage20Context.cs" />
@@ -187,19 +197,27 @@
     <Content Include="E:\Index.cshtml">
       <Link>Views\Home\Index.cshtml</Link>
     </Content>
-    <Content Include="Views\Vehicles\Create.cshtml" />
+    <Content Include="Views\Vehicles\old_Create.cshtml" />
     <Content Include="Views\Vehicles\Delete.cshtml" />
-    <Content Include="Views\Vehicles\Details.cshtml" />
-    <Content Include="Views\Vehicles\Edit.cshtml" />
+    <Content Include="Views\Vehicles\old_Details.cshtml" />
+    <Content Include="Views\Vehicles\old_Edit.cshtml" />
     <Content Include="Views\Vehicles\Index.cshtml" />
-    <Content Include="Views\Vehicles\Search.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Vehicles\SearchResult.cshtml" />
     <Content Include="Views\Vehicles\SearchView.cshtml" />
     <Content Include="Views\Vehicles\Receipt.cshtml" />
+    <Content Include="Views\Members\Create.cshtml" />
+    <Content Include="Views\Members\Delete.cshtml" />
+    <Content Include="Views\Members\Details.cshtml" />
+    <Content Include="Views\Members\Edit.cshtml" />
+    <Content Include="Views\Members\Index.cshtml" />
+    <Content Include="Views\Vehicles\Create.cshtml" />
+    <Content Include="Views\Vehicles\Edit.cshtml" />
+    <Content Include="Views\Vehicles\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -210,8 +228,14 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610210735513_SyncedUpdate1.resx">
-      <DependentUpon>201610210735513_SyncedUpdate1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610261228495_init5.resx">
+      <DependentUpon>201610261228495_init5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610270731267_init6.resx">
+      <DependentUpon>201610270731267_init6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610270801191_init7.resx">
+      <DependentUpon>201610270801191_init7.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

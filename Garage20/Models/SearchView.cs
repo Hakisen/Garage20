@@ -10,6 +10,7 @@ namespace Garage20.Models
     {
         //public int Id { get; set; }
         public string typeOfVehicle { get; set; }
+        public string memberName { get; set; }
         public string regNr { get; set; }
         public string colour { get; set; }
         public string brand { get; set; }

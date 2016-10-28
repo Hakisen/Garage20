@@ -17,39 +17,58 @@ namespace Garage20.Controllers
         private Garage20Context db = new Garage20Context();
 
         // GET: Vehicles
-        public ActionResult Index(string sort)
+        public ActionResult Index(string sort, string searchVType, string searchRNr)
         {
-            var model = db.Vehicles.Where(p => p.TimeOut.Year < 2000).ToList();
+            //var vehicles = db.Vehicles.Include(v => v.Member).Include(v => v.TypeOfVehicle);
+            //return View(vehicles.ToList());
+
+            var model = db.Vehicles.Include(v => v.Member).Include(v => v.TypeOfVehicle).Where(p => p.TimeOut.Year < 2000);
+
+            if (!String.IsNullOrEmpty(searchVType))
+            {
+                model = model.Where(s => s.TypeOfVehicle.VehicleType.Contains(searchVType));
+            }
+
+            if (!String.IsNullOrEmpty(searchRNr))
+            {
+                model = model.Where(s => s.RegNr.Contains(searchRNr));
+            }
+
+
+            if (sort == "Member")
+            {
+                model = model.OrderBy(v => v.Member.MemberName);
+            }
             if (sort == "typeOfVehicle")
             {
-                model = model.OrderBy(v => v.TypeOfVehicle).ToList();
+                model = model.OrderBy(v => v.TypeOfVehicle.VehicleType);
             }
             else if (sort == "regNr")
             {
-                model = model.OrderBy(v => v.RegNr).ToList();
+                model = model.OrderBy(v => v.RegNr);
             }
             else if (sort == "colour")
             {
-                model = model.OrderBy(v => v.colour).ToList();
+                model = model.OrderBy(v => v.colour);
             }
             else if (sort == "brand")
             {
-                model = model.OrderBy(v => v.Brand).ToList();
+                model = model.OrderBy(v => v.Brand);
             }
             else if (sort == "model")
             {
-                model = model.OrderBy(v => v.Model).ToList();
+                model = model.OrderBy(v => v.Model);
             }
             else if (sort == "nrOfWheels")
             {
-                model = model.OrderBy(v => v.NrOfWheels).ToList();
+                model = model.OrderBy(v => v.NrOfWheels);
             }
             else if (sort == "timeIn")
             {
-                model = model.OrderBy(v => v.TimeIn).ToList();
-            }
+                model = model.OrderBy(v => v.TimeIn);
+            }           
 
-            return View(model);
+            return View(model.ToList());
             //return View(db.Vehicles.ToList());
         }
 
@@ -84,17 +103,26 @@ namespace Garage20.Controllers
 
         //public ActionResult Search()  // Ersatt av ViewModel nedan
 
-        public ActionResult SearchView(string typeOfVehicle=null, string RegNr = "", string colour = "", string Brand = "", string Model = "", string NrOfWheels = null)
+        public ActionResult SearchView(string typeOfVehicle = null, string memberName = null, string RegNr = "", string colour = "", string Brand = "", string Model = "", string NrOfWheels = null)
+        //public ActionResult SearchView(string typeOfVehicle = null, string RegNr = "", string colour = "", string Brand = "", string Model = "", string NrOfWheels = null) //Med egen ViewModel = SerarchView
         //public ActionResult Search(TypeOfVehicle TypeOfVehicle, string RegNr = "", string colour = "", string Brand = "", string Model = "", int NrOfWheels = 0) //Fungerar med enum!
-        {            
+        {
             var model = db.Vehicles
-                .Where(p => (p.TypeOfVehicle.ToString().ToLower().Contains(typeOfVehicle.ToLower()) || typeOfVehicle == null || typeOfVehicle == "") 
+                .Where(p => (p.TypeOfVehicle.VehicleType.ToString().ToLower().Contains(typeOfVehicle.ToLower()) || typeOfVehicle == null || typeOfVehicle == "")
+                && (p.Member.MemberName.ToString().ToLower().Contains(memberName.ToLower()) || memberName == null || memberName == "") 
                 && (RegNr == null || RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper()))
                 && (colour == null || colour == "" || p.colour.ToUpper().Contains(colour.ToUpper()))
                 && (Brand == null || Brand == "" || p.Brand.ToUpper().Contains(Brand.ToUpper()))
                 && (p.NrOfWheels.ToString().Contains(NrOfWheels) || NrOfWheels == "" || NrOfWheels == null || NrOfWheels == "0"));
+
+ /*             .Where(p => (p.TypeOfVehicle.ToString().ToLower().Contains(typeOfVehicle.ToLower()) || typeOfVehicle == null || typeOfVehicle == "") 
+                && (RegNr == null || RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper()))
+                && (colour == null || colour == "" || p.colour.ToUpper().Contains(colour.ToUpper()))
+                && (Brand == null || Brand == "" || p.Brand.ToUpper().Contains(Brand.ToUpper()))
+                && (p.NrOfWheels.ToString().Contains(NrOfWheels) || NrOfWheels == "" || NrOfWheels == null || NrOfWheels == "0"));
+
                 
-/*            .Where(p => p.TypeOfVehicle.ToString().ToLower().Contains(typeOfVehicle.ToString().ToLower()) 
+            .Where(p => p.TypeOfVehicle.ToString().ToLower().Contains(typeOfVehicle.ToString().ToLower()) 
             && (RegNr == null || RegNr == "" || p.RegNr.ToUpper().Contains(RegNr.ToUpper())) 
             && (colour == null || colour == "" || p.colour.ToUpper().Contains(colour.ToUpper())) 
             && (Brand == null || Brand == "" || p.Brand.ToUpper().Contains(Brand.ToUpper())) 
@@ -126,6 +154,8 @@ namespace Garage20.Controllers
         // GET: Vehicles/Create
         public ActionResult Create()
         {
+            ViewBag.MemberId = new SelectList(db.Members, "Id", "MemberName");
+            ViewBag.TypeOfVehicleId = new SelectList(db.TypeOfVehicles, "Id", "VehicleType");
             return View();
         }
 
@@ -134,7 +164,7 @@ namespace Garage20.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
+        public ActionResult Create([Bind(Include = "Id,TypeOfVehicleId,RegNr,colour,Brand,Model,NrOfWheels,MemberId")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -142,7 +172,7 @@ namespace Garage20.Controllers
                 if (existRegNr != null && existRegNr.TimeOut.Year < 2000)
                 {
                         ViewBag.ErrorMessage = ("Error vehicle RegNr  \"" + existRegNr.RegNr + "\"  already exist, change to unique");
-                        return View(vehicle);
+                        //return View(vehicle);
                 }
                 else
                 {
@@ -150,14 +180,17 @@ namespace Garage20.Controllers
                     //vehicle.ParkingCostParkHour = 60;
                     db.Vehicles.Add(vehicle);
                     db.SaveChanges();
-                }
                     return RedirectToAction("Index");
+                }                    
             }
+
+            ViewBag.MemberId = new SelectList(db.Members, "Id", "MemberName", vehicle.MemberId);
+            ViewBag.TypeOfVehicleId = new SelectList(db.TypeOfVehicles, "Id", "VehicleType", vehicle.TypeOfVehicleId);
             return View(vehicle);
         }
 
 
-    //    if (ModelState.IsValid)
+    //    if (ModelState.IsValid)  //gamla koden inanan Ulfs ändringar
     //    {
     //        vehicle.TimeIn = DateTime.Now;
     //        db.Vehicles.Add(vehicle);
@@ -180,6 +213,9 @@ namespace Garage20.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.MemberId = new SelectList(db.Members, "Id", "MemberName", vehicle.MemberId);
+            ViewBag.TypeOfVehicleId = new SelectList(db.TypeOfVehicles, "Id", "VehicleType", vehicle.TypeOfVehicleId);
             return View(vehicle);
         }
 
@@ -188,18 +224,21 @@ namespace Garage20.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TypeOfVehicle,RegNr,colour,Brand,Model,NrOfWheels,TimeIn")] Vehicle vehicle)
+        public ActionResult Edit([Bind(Include = "Id,TypeOfVehicleId,RegNr,colour,Brand,Model,NrOfWheels,MemberId")] Vehicle vehicle)
 
         {
             //var timeIn = vehicle.TimeIn;
             if (ModelState.IsValid)
             {
+//                Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
                 Vehicle existRegNr = db.Vehicles.FirstOrDefault(v => v.RegNr.ToLower() == vehicle.RegNr.ToLower());
-                
-                if (existRegNr != null && (existRegNr.Id != vehicle.Id) && (existRegNr.TimeOut.Year < 2000))
+
+                var test = existRegNr;
+
+                if (existRegNr != null && (existRegNr.Id != vehicle.Id))  // && (existRegNr.TimeOut.Year < 2000))
                 {
                     ViewBag.ErrorMessage = ("Error vehicle RegNr  \"" + existRegNr.RegNr + "\"  already exist, change to unique");
-                    return View(vehicle);
+                    //return View(vehicle);
                 }
                 else
                 {
@@ -211,9 +250,12 @@ namespace Garage20.Controllers
                     //db.Entry(vehicle).State = EntityState.Modified;
                     db.Vehicles.AddOrUpdate(vehicle);  //
                     db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
             }
+
+            ViewBag.MemberId = new SelectList(db.Members, "Id", "MemberName", vehicle.MemberId);
+            ViewBag.TypeOfVehicleId = new SelectList(db.TypeOfVehicles, "Id", "VehicleType", vehicle.TypeOfVehicleId);
             return View(vehicle);
         }
 
@@ -277,7 +319,7 @@ namespace Garage20.Controllers
         }
 
 
-
+        // Scaffold original VS:
         //// POST: Vehicles/Delete/5
         //[HttpPost, ActionName("Delete")]
         //[ValidateAntiForgeryToken]

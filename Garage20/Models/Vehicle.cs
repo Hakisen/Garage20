@@ -26,8 +26,10 @@ namespace Garage20.Models
     {
         //[Key]
         public int Id { get; set; }
-
-        //public TypeOfVehicle TypeOfVehicle { get; set; }
+        
+        [Required]
+        public int TypeOfVehicleId { get; set; }
+        public virtual TypeOfVehicle TypeOfVehicle { get; set; }
 
         [Required]
         [StringLength(10, MinimumLength = 3, ErrorMessage = "Invalid, Min 3 digits max 10 digits")]
@@ -36,7 +38,7 @@ namespace Garage20.Models
         //Index(IsUnique = true)
         public string RegNr { get; set; }
 
-        [Required]
+        //[Required]
         [MaxLength(10, ErrorMessage = " maximum no Of letters is 10")]
         public string colour { get; set; }
 
@@ -58,12 +60,20 @@ namespace Garage20.Models
 
         [Display(Name="Parking time hh:mm")]
         [DisplayFormat(DataFormatString ="{0:hh\\:mm}")]
-        public TimeSpan TimeParked { get; set; }        
+        public TimeSpan TimeParked { get; set; }
+
+        public TimeSpan ParkTime
+        {
+            get
+            {
+                return DateTime.Now - TimeIn;
+            }   
+        }
         public int TimeFee { get; set; }
         public int MemberId { get; set; }
         public virtual Member Member { get; set; }
-        public int VehicleTypeId { get; set; }
-        public virtual TypeOfVehicle TypeOfVehicle { get; set; }
+        
+        //public virtual TypeOfVehicle TypeOfVehicle { get; set; }
     }
 
     //public enum TypeOfVehicle

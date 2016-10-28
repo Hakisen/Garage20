@@ -7,13 +7,13 @@ namespace Garage20.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class SyncedUpdate1 : IMigrationMetadata
+    public sealed partial class init6 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SyncedUpdate1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(init6));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610210735513_SyncedUpdate1"; }
+            get { return "201610270731267_init6"; }
         }
         
         string IMigrationMetadata.Source

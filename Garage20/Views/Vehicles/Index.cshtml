@@ -8,18 +8,32 @@
 
 <p>
     @*@Html.ActionLink("Create New", "Create") *@
-    <input type="button" value="Create New" onclick="location.href='@Url.Action("Create", "Vehicles")'" /> &emsp;
+    <input type="button" value="Park Vehicle" onclick="location.href='@Url.Action("Create", "Vehicles")'" /> &emsp;
+    <input type="button" value="Create Member" onclick="location.href='@Url.Action("Create", "Members")'" /> &emsp;
     @*@Html.ActionLink("Search", "SearchView")*@
     <input type="button" value="Search" onclick="location.href='@Url.Action("SearchView", "Vehicles")'" />
 
-   
+    @using (Html.BeginForm())
+    {
+    <p>
+        Vehicle Type: @Html.TextBox("SearchVType") &emsp;
+        @*<input type="submit" value="Search" />*@
+        Reg Nr: @Html.TextBox("SearchRNr") 
+        <input type="submit" value="Search" />
+     </p>
+    }
     
-</p>
+
 <table class="table">
     <tr>
         <th>
+            <a href="?sort=Member">
+            @Html.DisplayNameFor(model => model.Member.MemberName)
+            </a>
+        </th>
+        <th>
             <a href="?sort=typeOfVehicle">
-            @Html.DisplayNameFor(model => model.TypeOfVehicle)
+            @Html.DisplayNameFor(model => model.TypeOfVehicle.VehicleType)
             </a>
         </th>
         <th>
@@ -54,11 +68,11 @@
         </th>
         @*<th>            
             @Html.DisplayNameFor(model => model.TimeOut)
-        </th>
+        </th> *@
         <th>
-            @Html.DisplayNameFor(model => model.TimeParked)
+            @Html.DisplayNameFor(model => model.ParkTime)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.TimeFee)
         </th>*@
         <th></th>
@@ -67,7 +81,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.TypeOfVehicle)
+            @Html.DisplayFor(modelItem => item.Member.MemberName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeOfVehicle.VehicleType)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.RegNr)
@@ -89,11 +106,11 @@
         </td>
         @*<td>
             @Html.DisplayFor(modelItem => item.TimeOut)
-        </td>
+        </td> *@
         <td>
-            @Html.DisplayFor(modelItem => item.TimeParked)
+            @Html.DisplayFor(modelItem => item.ParkTime)            
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.TimeFee)
         </td>*@
         <td>
@@ -106,3 +123,7 @@
 }
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
